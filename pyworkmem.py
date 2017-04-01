@@ -26,7 +26,7 @@ def recognize_audio():
     # Record Audio
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print("Di algo!")
+        print("[Sig]: Di algo!")
         audio = r.listen(source)
 
     string = None
@@ -37,11 +37,11 @@ def recognize_audio():
         # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
         # instead of `r.recognize_google(audio)`
         string = r.recognize_google(audio, language='es-ES')
-        print("Has dicho: " + string)
+        print("[You]: " + string)
     except sr.UnknownValueError:
-        print("Google Speech Recognition could not understand audio")
+        print("[Err]: Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
-        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        print("[Err]: Could not request results from Google Speech Recognition service; {0}".format(e))
     return string
 
 
@@ -53,6 +53,7 @@ def play_str(string):
     tts = gTTS(text=string, lang='es')
     tts.save('temp.mp3')
     play('temp.mp3')
+    print('[Bot]: ' + string)
 
 
 def introduction():
@@ -64,19 +65,31 @@ def introduction():
 
 def test_repeat():
     play_str("Porfavor repita los siguientes vectores en el mismo orden")
-    for j in range(3, 8):
+    for j in range(3, 9):
         arr = gen_vector(j)
         sleep(5)
         play_str(' '.join(map(str, arr)))
-        sleep(j-1)
-        # play_str('Ahora usted')
-        # sleep(j-1)
-        # string = recognize_audio()
-        # play_str('Ha dicho: '+string)
-        print(' '.join(map(str, arr)))
+        sleep(j - 1)
+        play_str('Ahora usted')
+        sleep(2)
+        string = recognize_audio()
+        string.replace(' ', '')
+        string = ' '.join(string)
+        if string == ' '.join(map(str, arr)):
+            play_str('Ha dicho: ' + string + ' y es correcto')
+        else:
+            play_str('Ha dicho: ' + string + ' y es incorrecto')
+        # print(' '.join(map(str, arr)))
 
 
 if __name__ == '__main__':
     # introduction()
     test_repeat()
+
+    # play_str('Ahora usted')
+    # sleep(2)
+    # string = recognize_audio()
+    # play_str('Ha dicho: '+string)
+    sleep(10)
+
     os.remove('temp.mp3')

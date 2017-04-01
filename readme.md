@@ -6,8 +6,12 @@ Want to improve your working memory? Have no friends to play memory games with t
 
 WAIS IV, Stanford-Binet and several other IQ tests measure your working memory by making you repeating a list of numbers in order (or reverse order). This task was historically performed by collegiate psychopaths but now you can do it yourself with your computer.
 
-PyWorkMem says in loud voice a series of numbers and/or letters and asks you to do some operation with them, but example ordering them or simply repeating the series. If you have a working microphone you can shout the hell out of the series to make your iq raise as high as your voice.
+PyWorkMem says in loud voice a series of numbers and/or letters and asks you to do some operation with them, for example ordering them or simply repeating the series. If you have a working microphone you can shout the hell out of the series to make your iq raise as high as your voice.
 
 # Installation
-pip install pyaudio SpeechRecognition gTTS pyglet
-yaourt -S avbin # For pyglet to work
+
+Dependencies:
+
+```bash
+pip install pyaudio SpeechRecognition gTTS
+```
