@@ -1,6 +1,9 @@
 import logging
+import os
 import random
 import webbrowser
+from abc import abstractmethod
+from time import sleep
 
 import speech_recognition as sr
 from gtts import gTTS
@@ -59,9 +62,21 @@ def introduction():
     play_str(string)
 
 
+def test_repeat():
+    play_str("Porfavor repita los siguientes vectores en el mismo orden")
+    for j in range(3, 8):
+        arr = gen_vector(j)
+        sleep(5)
+        play_str(' '.join(map(str, arr)))
+        sleep(j-1)
+        # play_str('Ahora usted')
+        # sleep(j-1)
+        # string = recognize_audio()
+        # play_str('Ha dicho: '+string)
+        print(' '.join(map(str, arr)))
+
+
 if __name__ == '__main__':
-    logging.getLogger().setLevel(logging.CRITICAL)
-
-    introduction()
-
-    print(gen_vector(5))
+    # introduction()
+    test_repeat()
+    os.remove('temp.mp3')
