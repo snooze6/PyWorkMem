@@ -1,12 +1,9 @@
-import random
-
 import logging
-from time import sleep
+import random
+import webbrowser
 
 import speech_recognition as sr
 from gtts import gTTS
-from tempfile import TemporaryFile
-import pyglet
 
 
 def gen_vector(length):
@@ -45,16 +42,26 @@ def recognize_audio():
     return string
 
 
+def play(file):
+    webbrowser.open(file)
+
+
+def play_str(string):
+    tts = gTTS(text=string, lang='es')
+    tts.save('temp.mp3')
+    play('temp.mp3')
+
+
+def introduction():
+    string = """
+    Hola, y bienvenido a PyWorkMem
+    """
+    play_str(string)
+
+
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.CRITICAL)
 
+    introduction()
+
     print(gen_vector(5))
-
-    tts = gTTS(text='Hello', lang='en')
-    f = TemporaryFile()
-    tts.write_to_fp(f)
-    f.close()
-
-    music = pyglet.media.load(f, streaming=False)
-    sleep(music.duration)
-    music.play()
