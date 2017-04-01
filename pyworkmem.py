@@ -7,6 +7,7 @@ from time import sleep
 
 import speech_recognition as sr
 from gtts import gTTS
+from mutagen.mp3 import MP3
 
 
 def gen_vector(length):
@@ -46,14 +47,16 @@ def recognize_audio():
 
 
 def play(file):
+    audio = MP3(file)
     webbrowser.open(file)
+    sleep(audio.info.length)
 
 
 def play_str(string):
     tts = gTTS(text=string, lang='es')
+    print('[Bot]: ' + string)
     tts.save('temp.mp3')
     play('temp.mp3')
-    print('[Bot]: ' + string)
 
 
 def introduction():
@@ -67,19 +70,20 @@ def test_repeat():
     play_str("Porfavor repita los siguientes vectores en el mismo orden")
     for j in range(3, 9):
         arr = gen_vector(j)
-        sleep(5)
         play_str(' '.join(map(str, arr)))
-        sleep(j - 1)
         play_str('Ahora usted')
-        sleep(2)
+
+        # Listen
         string = recognize_audio()
-        string.replace(' ', '')
-        string = ' '.join(string)
-        if string == ' '.join(map(str, arr)):
-            play_str('Ha dicho: ' + string + ' y es correcto')
+        if string:
+            string.strip().replace(' ', '')
+            string = ' '.join(string)
+            if string == ' '.join(map(str, arr)):
+                play_str('Ha dicho: ' + string + ' y es correcto')
+            else:
+                play_str('Ha dicho: ' + string + ' y es incorrecto')
         else:
-            play_str('Ha dicho: ' + string + ' y es incorrecto')
-        # print(' '.join(map(str, arr)))
+            play_str('No he podido entender lo que ha dicho')
 
 
 if __name__ == '__main__':
@@ -90,6 +94,5 @@ if __name__ == '__main__':
     # sleep(2)
     # string = recognize_audio()
     # play_str('Ha dicho: '+string)
-    sleep(10)
 
     os.remove('temp.mp3')
